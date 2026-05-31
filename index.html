@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<title>لعبة إكس أو — XO</title>
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+  :root{
+    --bg1:#0f172a; --bg2:#1e293b; --card:#1e293b; --accent:#38bdf8;
+    --x:#f43f5e; --o:#22d3ee; --win:#22c55e; --txt:#e2e8f0; --muted:#94a3b8;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; height:100%;}
+  body{
+    font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans Arabic",Arial,sans-serif;
+    background:radial-gradient(circle at 30% 20%, #1e293b, #0f172a 70%);
+    color:var(--txt); display:flex; flex-direction:column; align-items:center;
+    justify-content:flex-start; min-height:100vh; padding:18px; gap:14px;
+    overflow-x:hidden;
+  }
+  h1{font-size:1.9rem; margin:6px 0 0; letter-spacing:1px;
+     background:linear-gradient(90deg,var(--x),var(--o)); -webkit-background-clip:text;
+     background-clip:text; color:transparent; font-weight:800;}
+  .sub{color:var(--muted); font-size:.85rem; margin-top:-6px;}
+  .modes{display:flex; gap:8px; flex-wrap:wrap; justify-content:center;}
+  .modes button{
+    background:var(--card); color:var(--txt); border:1px solid #334155;
+    padding:9px 14px; border-radius:12px; font-size:.9rem; cursor:pointer;
+    transition:.2s; font-weight:600;
+  }
+  .modes button.active{background:var(--accent); color:#082f49; border-color:var(--accent);}
+  .modes button:active{transform:scale(.96);}
+  .status{font-size:1.15rem; font-weight:700; min-height:1.5em; text-align:center;}
+  .board{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    width:min(90vw,360px); aspect-ratio:1/1;
+  }
+  .cell{
+    background:var(--card); border-radius:16px; display:flex;
+    align-items:center; justify-content:center; font-size:clamp(2.4rem,14vw,4rem);
+    font-weight:800; cursor:pointer; user-select:none; transition:.15s;
+    border:2px solid #334155;
+  }
+  .cell:active{transform:scale(.95);}
+  .cell.x{color:var(--x);} .cell.o{color:var(--o);}
+  .cell.win{background:var(--win); color:#052e16; border-color:var(--win);
+            animation:pop .4s ease;}
+  @keyframes pop{0%{transform:scale(.7);}60%{transform:scale(1.12);}100%{transform:scale(1);}}
+  .score{display:flex; gap:18px; font-size:1rem;}
+  .score div{background:var(--card); padding:8px 16px; border-radius:12px; border:1px solid #334155;}
+  .score b.x{color:var(--x);} .score b.o{color:var(--o);}
+  .actions{display:flex; gap:10px;}
+  .actions button{
+    background:linear-gradient(135deg,var(--accent),#0ea5e9); color:#082f49;
+    border:none; padding:11px 22px; border-radius:12px; font-size:1rem;
+    font-weight:700; cursor:pointer; transition:.2s;
+  }
+  .actions button.ghost{background:transparent; color:var(--muted); border:1px solid #334155;}
+  .actions button:active{transform:scale(.96);}
+  footer{color:var(--muted); font-size:.72rem; margin-top:auto; padding-top:10px;}
+</style>
+</head>
+<body>
+  <h1>لعبة إكس أو</h1>
+  <div class="sub">Tic-Tac-Toe · صُنعت بواسطة OpenClaw 🦾</div>
+
+  <div class="modes">
+    <button id="mPvP">👥 لاعبان</button>
+    <button id="mEasy">🙂 سهل</button>
+    <button id="mHard" class="active">🧠 صعب (لا يُهزم)</button>
+  </div>
+
+  <div class="status" id="status">دورك يا ❌</div>
+
+  <div class="board" id="board"></div>
+
+  <div class="score">
+    <div>❌ <b class="x" id="sx">0</b></div>
+    <div>🤝 <b id="sd">0</b></div>
+    <div>⭕ <b class="o" id="so">0</b></div>
+  </div>
+
+  <div class="actions">
+    <button id="reset">🔄 جولة جديدة</button>
+    <button id="clear" class="ghost">تصفير النتيجة</button>
+  </div>
+
+  <footer>v1.0 · يعمل أوفلاين · OpenClaw</footer>
+
+<script src="game.js"></script>
+</body>
+</html>
