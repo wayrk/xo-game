@@ -3,6 +3,6 @@
   "target": {
     "namespace": "android_app",
     "package_name": "ai.openclaw.xo.twa",
-    "sha256_cert_fingerprints": [""]
+    "sha256_cert_fingerprints": ["AB:AE:AB:DF:41:5E:EE:55:23:D9:C2:E0:5E:86:30:70:9C:3E:C9:DC:EA:94:14:65:E3:46:8D:8A:FC:83:69:3C"]
   }
 }]
