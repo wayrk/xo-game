@@ -1,4 +1,4 @@
-const CACHE = "xo-v1";
+const CACHE = "xo-v1.4";
 const ASSETS = [
   "./index.html",
   "./game.js",

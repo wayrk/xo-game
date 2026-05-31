@@ -26,8 +26,8 @@
         const r = el.getBoundingClientRect();
         if (r.height) used += r.height;
       });
-      // هوامش/فجوات تقديرية آمنة
-      const chrome = 60;
+      // هوامش/فجوات تقديرية آمنة (زيادة للحماية من القص عند تغيّر النص)
+      const chrome = 96;
 
       let size;
       if (landscape) {
@@ -35,7 +35,9 @@
       } else {
         const availH = vhPx - used - chrome;
         const availW = vw - 24;
-        size = Math.max(180, Math.min(availW, availH, 420));
+        // الحد الأدنى الحقيقي: لا نسمح بلوحة أكبر من المساحة الرأسية المتاحة أبداً
+        size = Math.min(availW, availH, 420);
+        if (size < 150) size = Math.max(140, Math.min(availW, 150)); // حد أدنى للأجهزة القصيرة جداً
       }
       boardEl.style.setProperty("--bsize", Math.floor(size) + "px");
     });
@@ -140,6 +142,7 @@
     if (res) { finish(res); return; }
     current = current === "x" ? "o" : "x";
     setStatus();
+    fitBoard(); // إعادة ضبط الحجم بعد أي تغيّر في الحالة/النص (يمنع قص الصف السفلي)
   }
 
   /* ---------- الذكاء الاصطناعي ---------- */

@@ -36,19 +36,20 @@
   }
   .modes button.active{background:var(--accent); color:#082f49; border-color:var(--accent);}
   .modes button:active{transform:scale(.96);}
-  .status{font-size:clamp(.9rem,3.4vw,1.15rem); font-weight:700; min-height:1.3em; text-align:center; margin:0; flex:0 0 auto;}
+  .status{font-size:clamp(.9rem,3.4vw,1.15rem); font-weight:700; height:1.5em; line-height:1.5em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center; margin:0; flex:0 0 auto;}
   .board{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:2.5%;
+    display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); gap:2.5%;
     /* الحجم يُضبط بـ JS = أصغر بعد قياس المساحة الفعلية (بلا قص أبداً) */
     width:var(--bsize, 300px); height:var(--bsize, 300px);
-    flex:0 0 auto;
+    aspect-ratio:1/1; flex:0 0 auto;
   }
   .cell{
     background:var(--card); border-radius:14px; display:flex;
     align-items:center; justify-content:center;
-    font-size:calc(var(--bsize) * 0.18);
+    font-size:calc(var(--bsize, 300px) * 0.18);
+    line-height:1; overflow:hidden;
     font-weight:800; cursor:pointer; user-select:none; transition:.15s;
-    border:2px solid #334155;
+    border:2px solid #334155; min-height:0; min-width:0;
   }
   .cell:active{transform:scale(.95);}
   .cell.x{color:var(--x);} .cell.o{color:var(--o);}
@@ -107,7 +108,7 @@
     </div>
   </div>
 
-  <footer>v1.3 · يعمل أوفلاين · OpenClaw</footer>
+  <footer>v1.4 · يعمل أوفلاين · OpenClaw</footer>
 
 <script src="game.js"></script>
 </body>
