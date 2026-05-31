@@ -4,6 +4,7 @@
   "description": "XO Tic-Tac-Toe game",
   "private": true,
   "devDependencies": {
+    "@bubblewrap/cli": "^1.24.1",
     "@capacitor/android": "^6.2.1",
     "@capacitor/cli": "^6.2.1",
     "@capacitor/core": "^6.2.1"
