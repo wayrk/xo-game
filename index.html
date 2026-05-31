@@ -12,22 +12,23 @@
     --x:#f43f5e; --o:#22d3ee; --win:#22c55e; --txt:#e2e8f0; --muted:#94a3b8;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{margin:0;}
+  html,body{margin:0; height:100%;}
   body{
     font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans Arabic",Arial,sans-serif;
     background:radial-gradient(circle at 30% 20%, #1e293b, #0f172a 70%);
     color:var(--txt); display:flex; flex-direction:column; align-items:center;
-    justify-content:flex-start; gap:10px;
-    /* min-height مرن + scroll بدل القص — يضمن ظهور كل شيء */
-    min-height:100vh; min-height:100dvh;
-    padding:max(10px, env(safe-area-inset-top)) 14px max(10px, env(safe-area-inset-bottom));
-    overflow-x:hidden; overflow-y:auto;
+    justify-content:center; gap:1.2vh;
+    /* الارتفاع الحقيقي للنافذة — يُضبط بـ JS عبر --vh */
+    height:calc(var(--vh, 1vh) * 100);
+    max-height:calc(var(--vh, 1vh) * 100);
+    padding:max(8px, env(safe-area-inset-top)) 12px max(8px, env(safe-area-inset-bottom));
+    overflow:hidden;
   }
-  h1{font-size:clamp(1.3rem,5vw,1.9rem); margin:2px 0 0; letter-spacing:1px;
+  h1{font-size:clamp(1.1rem,4.2vw,1.7rem); margin:0; letter-spacing:1px;
      background:linear-gradient(90deg,var(--x),var(--o)); -webkit-background-clip:text;
-     background-clip:text; color:transparent; font-weight:800;}
-  .sub{color:var(--muted); font-size:clamp(.7rem,2.4vw,.85rem); margin-top:-4px; text-align:center;}
-  .modes{display:flex; gap:6px; flex-wrap:wrap; justify-content:center;}
+     background-clip:text; color:transparent; font-weight:800; flex:0 0 auto;}
+  .sub{color:var(--muted); font-size:clamp(.65rem,2.2vw,.8rem); margin-top:-2px; text-align:center; flex:0 0 auto;}
+  .modes{display:flex; gap:6px; flex-wrap:wrap; justify-content:center; flex:0 0 auto;}
   .modes button{
     background:var(--card); color:var(--txt); border:1px solid #334155;
     padding:7px 12px; border-radius:12px; font-size:clamp(.78rem,2.6vw,.9rem); cursor:pointer;
@@ -35,12 +36,11 @@
   }
   .modes button.active{background:var(--accent); color:#082f49; border-color:var(--accent);}
   .modes button:active{transform:scale(.96);}
-  .status{font-size:clamp(.95rem,3.6vw,1.2rem); font-weight:700; min-height:1.4em; text-align:center; margin:2px 0;}
+  .status{font-size:clamp(.9rem,3.4vw,1.15rem); font-weight:700; min-height:1.3em; text-align:center; margin:0; flex:0 0 auto;}
   .board{
     display:grid; grid-template-columns:repeat(3,1fr); gap:2.5%;
-    /* الحجم = الأصغر بين العرض المتاح والارتفاع المتاح → دائماً يظهر كاملاً */
-    --bsize:min(86vw, 44vh, 380px);
-    width:var(--bsize); height:var(--bsize);
+    /* الحجم يُضبط بـ JS = أصغر بعد قياس المساحة الفعلية (بلا قص أبداً) */
+    width:var(--bsize, 300px); height:var(--bsize, 300px);
     flex:0 0 auto;
   }
   .cell{
@@ -56,34 +56,29 @@
   .cell.win{background:var(--win); color:#052e16; border-color:var(--win);
             animation:pop .4s ease;}
   @keyframes pop{0%{transform:scale(.7);}60%{transform:scale(1.12);}100%{transform:scale(1);}}
-  .score{display:flex; gap:10px; font-size:clamp(.85rem,3vw,1rem); flex-wrap:wrap; justify-content:center;}
-  .score div{background:var(--card); padding:6px 14px; border-radius:12px; border:1px solid #334155;}
+  .score{display:flex; gap:8px; font-size:clamp(.8rem,2.8vw,.95rem); flex-wrap:nowrap; justify-content:center; flex:0 0 auto;}
+  .score div{background:var(--card); padding:5px 12px; border-radius:12px; border:1px solid #334155;}
   .score b.x{color:var(--x);} .score b.o{color:var(--o);}
-  .actions{display:flex; gap:10px;}
+  .actions{display:flex; gap:8px; flex:0 0 auto; flex-wrap:wrap; justify-content:center;}
   .actions button{
     background:linear-gradient(135deg,var(--accent),#0ea5e9); color:#082f49;
-    border:none; padding:11px 22px; border-radius:12px; font-size:1rem;
+    border:none; padding:9px 18px; border-radius:12px; font-size:clamp(.85rem,3vw,1rem);
     font-weight:700; cursor:pointer; transition:.2s;
   }
   .actions button.ghost{background:transparent; color:var(--muted); border:1px solid #334155;}
   .actions button:active{transform:scale(.96);}
-  footer{color:var(--muted); font-size:.7rem; margin-top:6px; padding-top:6px;}
-  .ver{font-size:.85rem;}
+  footer{color:var(--muted); font-size:.68rem; margin:0; flex:0 0 auto;}
 
-  /* الافتراضي (portrait / شاشة طويلة): panel يتدفق عادي */
+  /* panel يتدفق عادي */
   .panel{display:contents;}
 
-  /* وضع الشاشة العريضة القصيرة: لوحة جنب التحكم — لا قص أبداً */
-  @media (max-height:560px) and (min-aspect-ratio:1/1){
-    body{flex-direction:row; flex-wrap:nowrap; align-items:center; justify-content:center; gap:3vw; padding-top:4px;}
-    h1{position:fixed; top:4px; left:0; right:0; font-size:clamp(.95rem,2.8vh,1.3rem); margin:0; z-index:5;}
+  /* الشاشة العريضة القصيرة (landscape): صف أفقي — الـ JS يضبط حجم اللوحة */
+  @media (max-height:520px) and (min-aspect-ratio:1/1){
+    body{flex-direction:row; flex-wrap:nowrap; align-items:center; justify-content:center; gap:3vw;}
     .sub,footer{display:none;}
-    .board{--bsize:min(78vh, 42vw, 340px);}
-    .panel{display:flex; flex-direction:column; align-items:center; gap:8px; max-width:50vw;}
-    .modes{order:-1; flex-wrap:nowrap;}
-    .score{flex-wrap:nowrap;}
-    .actions{flex-wrap:wrap; justify-content:center;}
-    .actions button{padding:8px 14px; font-size:.85rem;}
+    .panel{display:flex; flex-direction:column; align-items:center; gap:1.5vh; max-width:46vw;}
+    h1{position:fixed; top:2px; left:0; right:0; font-size:clamp(.85rem,2.6vh,1.2rem); z-index:5;}
+    .modes{order:-1;}
   }
 </style>
 </head>
@@ -112,7 +107,7 @@
     </div>
   </div>
 
-  <footer>v1.2 · يعمل أوفلاين · OpenClaw</footer>
+  <footer>v1.3 · يعمل أوفلاين · OpenClaw</footer>
 
 <script src="game.js"></script>
 </body>

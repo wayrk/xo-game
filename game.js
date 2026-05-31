@@ -6,6 +6,44 @@
   "use strict";
 
   const boardEl = document.getElementById("board");
+
+  /* ---------- ضبط الحجم الديناميكي (يضمن ظهور كل المربعات بلا قص) ---------- */
+  function fitBoard() {
+    // 1) الارتفاع الحقيقي للنافذة (يتعامل مع شريط المتصفح المتحرك)
+    const vh = (window.visualViewport ? window.visualViewport.height : window.innerHeight) * 0.01;
+    document.documentElement.style.setProperty("--vh", vh + "px");
+
+    // 2) قِس المساحة المتبقية فعلياً بعد كل العناصر الأخرى، ثم اجعل اللوحة تملأها بلا تجاوز
+    requestAnimationFrame(() => {
+      const vw = document.documentElement.clientWidth;
+      const vhPx = (window.visualViewport ? window.visualViewport.height : window.innerHeight);
+      const landscape = vw > vhPx && vhPx <= 520;
+
+      // ارتفاع كل العناصر ما عدا اللوحة
+      let used = 0;
+      document.querySelectorAll("body > *:not(.board), .panel > *").forEach(el => {
+        if (el === boardEl) return;
+        const r = el.getBoundingClientRect();
+        if (r.height) used += r.height;
+      });
+      // هوامش/فجوات تقديرية آمنة
+      const chrome = 60;
+
+      let size;
+      if (landscape) {
+        size = Math.min(vhPx * 0.92, vw * 0.42, 360);
+      } else {
+        const availH = vhPx - used - chrome;
+        const availW = vw - 24;
+        size = Math.max(180, Math.min(availW, availH, 420));
+      }
+      boardEl.style.setProperty("--bsize", Math.floor(size) + "px");
+    });
+  }
+  window.addEventListener("resize", fitBoard);
+  window.addEventListener("orientationchange", fitBoard);
+  if (window.visualViewport) window.visualViewport.addEventListener("resize", fitBoard);
+  setTimeout(fitBoard, 0); setTimeout(fitBoard, 200);
   const statusEl = document.getElementById("status");
   const sxEl = document.getElementById("sx");
   const soEl = document.getElementById("so");
