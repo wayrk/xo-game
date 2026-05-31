@@ -1,0 +1,6 @@
+{
+  "appId": "ai.openclaw.xo",
+  "appName": "لعبة إكس أو",
+  "webDir": "www",
+  "server": { "androidScheme": "https" }
+}

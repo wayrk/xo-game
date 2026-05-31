@@ -1,0 +1,17 @@
+# build artifacts
+desktop/dist/
+desktop/node_modules/
+android/app/build/
+android/build/
+android/.gradle/
+node_modules/
+*.apk
+*.exe
+*.zip
+*.keystore
+# secrets
+android/app/build.gradle.bak
+
+keystore.properties
+android/keystore.properties
+desktop/dist/

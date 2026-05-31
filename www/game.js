@@ -41,12 +41,13 @@
     setStatus();
   }
 
+  function mark(p){ return p==="x" ? "<span class='mk x'>✕</span>" : "<span class='mk o'>◯</span>"; }
   function setStatus(text) {
-    if (text) { statusEl.textContent = text; return; }
+    if (text) { statusEl.innerHTML = text; return; }
     if (mode === "pvp") {
-      statusEl.textContent = current === "x" ? "دور ❌" : "دور ⭕";
+      statusEl.innerHTML = (current === "x" ? "دور " : "دور ") + mark(current);
     } else {
-      statusEl.textContent = current === "x" ? "دورك يا ❌" : "يفكّر الكمبيوتر… ⭕";
+      statusEl.innerHTML = current === "x" ? ("دورك " + mark("x")) : ("يفكّر الكمبيوتر… " + mark("o"));
     }
   }
 
@@ -74,8 +75,8 @@
       if (res.player === "x") { score.x++; sxEl.textContent = score.x; }
       else { score.o++; soEl.textContent = score.o; }
       const who = res.player === "x"
-        ? (mode === "pvp" ? "فاز ❌" : "🎉 فزت يا بطل!")
-        : (mode === "pvp" ? "فاز ⭕" : "فاز الكمبيوتر ⭕");
+        ? (mode === "pvp" ? ("فاز " + mark("x")) : ("تهانينا! فزت " + mark("x")))
+        : (mode === "pvp" ? ("فاز " + mark("o")) : ("فاز الكمبيوتر " + mark("o")));
       setStatus(who);
     }
   }

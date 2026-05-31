@@ -1,0 +1,33 @@
+{
+  "name": "xo-game-desktop",
+  "version": "1.0.0",
+  "description": "XO Tic-Tac-Toe Desktop",
+  "main": "main.js",
+  "author": "OpenClaw",
+  "scripts": {
+    "dist:win": "electron-builder --win portable --x64"
+  },
+  "build": {
+    "appId": "ai.openclaw.xo",
+    "productName": "XO-Game",
+    "files": [
+      "main.js",
+      "www/**/*",
+      "build/**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "portable",
+      "icon": "build/icon.ico"
+    },
+    "portable": {
+      "artifactName": "XO-Game-${version}-portable.exe"
+    }
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  }
+}

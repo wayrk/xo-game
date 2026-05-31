@@ -45,6 +45,7 @@
   }
   .cell:active{transform:scale(.95);}
   .cell.x{color:var(--x);} .cell.o{color:var(--o);}
+  .mk{font-weight:900;} .mk.x{color:var(--x);} .mk.o{color:var(--o);}
   .cell.win{background:var(--win); color:#052e16; border-color:var(--win);
             animation:pop .4s ease;}
   @keyframes pop{0%{transform:scale(.7);}60%{transform:scale(1.12);}100%{transform:scale(1);}}
@@ -64,26 +65,26 @@
 </head>
 <body>
   <h1>لعبة إكس أو</h1>
-  <div class="sub">Tic-Tac-Toe · صُنعت بواسطة OpenClaw 🦾</div>
+  <div class="sub">Tic-Tac-Toe · صُنعت بواسطة OpenClaw</div>
 
   <div class="modes">
-    <button id="mPvP">👥 لاعبان</button>
-    <button id="mEasy">🙂 سهل</button>
-    <button id="mHard" class="active">🧠 صعب (لا يُهزم)</button>
+    <button id="mPvP">لاعبان</button>
+    <button id="mEasy">سهل</button>
+    <button id="mHard" class="active">صعب (لا يُهزم)</button>
   </div>
 
-  <div class="status" id="status">دورك يا ❌</div>
+  <div class="status" id="status">دورك <span class="mk x">✕</span></div>
 
   <div class="board" id="board"></div>
 
   <div class="score">
-    <div>❌ <b class="x" id="sx">0</b></div>
-    <div>🤝 <b id="sd">0</b></div>
-    <div>⭕ <b class="o" id="so">0</b></div>
+    <div><span class="mk x">✕</span> <b class="x" id="sx">0</b></div>
+    <div>تعادل <b id="sd">0</b></div>
+    <div><span class="mk o">◯</span> <b class="o" id="so">0</b></div>
   </div>
 
   <div class="actions">
-    <button id="reset">🔄 جولة جديدة</button>
+    <button id="reset">جولة جديدة</button>
     <button id="clear" class="ghost">تصفير النتيجة</button>
   </div>
 
