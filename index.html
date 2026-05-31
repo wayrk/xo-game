@@ -12,34 +12,41 @@
     --x:#f43f5e; --o:#22d3ee; --win:#22c55e; --txt:#e2e8f0; --muted:#94a3b8;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{margin:0; height:100%;}
+  html,body{margin:0;}
   body{
     font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans Arabic",Arial,sans-serif;
     background:radial-gradient(circle at 30% 20%, #1e293b, #0f172a 70%);
     color:var(--txt); display:flex; flex-direction:column; align-items:center;
-    justify-content:flex-start; min-height:100vh; padding:18px; gap:14px;
-    overflow-x:hidden;
+    justify-content:flex-start; gap:10px;
+    /* min-height مرن + scroll بدل القص — يضمن ظهور كل شيء */
+    min-height:100vh; min-height:100dvh;
+    padding:max(10px, env(safe-area-inset-top)) 14px max(10px, env(safe-area-inset-bottom));
+    overflow-x:hidden; overflow-y:auto;
   }
-  h1{font-size:1.9rem; margin:6px 0 0; letter-spacing:1px;
+  h1{font-size:clamp(1.3rem,5vw,1.9rem); margin:2px 0 0; letter-spacing:1px;
      background:linear-gradient(90deg,var(--x),var(--o)); -webkit-background-clip:text;
      background-clip:text; color:transparent; font-weight:800;}
-  .sub{color:var(--muted); font-size:.85rem; margin-top:-6px;}
-  .modes{display:flex; gap:8px; flex-wrap:wrap; justify-content:center;}
+  .sub{color:var(--muted); font-size:clamp(.7rem,2.4vw,.85rem); margin-top:-4px; text-align:center;}
+  .modes{display:flex; gap:6px; flex-wrap:wrap; justify-content:center;}
   .modes button{
     background:var(--card); color:var(--txt); border:1px solid #334155;
-    padding:9px 14px; border-radius:12px; font-size:.9rem; cursor:pointer;
+    padding:7px 12px; border-radius:12px; font-size:clamp(.78rem,2.6vw,.9rem); cursor:pointer;
     transition:.2s; font-weight:600;
   }
   .modes button.active{background:var(--accent); color:#082f49; border-color:var(--accent);}
   .modes button:active{transform:scale(.96);}
-  .status{font-size:1.15rem; font-weight:700; min-height:1.5em; text-align:center;}
+  .status{font-size:clamp(.95rem,3.6vw,1.2rem); font-weight:700; min-height:1.4em; text-align:center; margin:2px 0;}
   .board{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
-    width:min(90vw,360px); aspect-ratio:1/1;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:2.5%;
+    /* الحجم = الأصغر بين العرض المتاح والارتفاع المتاح → دائماً يظهر كاملاً */
+    --bsize:min(86vw, 44vh, 380px);
+    width:var(--bsize); height:var(--bsize);
+    flex:0 0 auto;
   }
   .cell{
-    background:var(--card); border-radius:16px; display:flex;
-    align-items:center; justify-content:center; font-size:clamp(2.4rem,14vw,4rem);
+    background:var(--card); border-radius:14px; display:flex;
+    align-items:center; justify-content:center;
+    font-size:calc(var(--bsize) * 0.18);
     font-weight:800; cursor:pointer; user-select:none; transition:.15s;
     border:2px solid #334155;
   }
@@ -49,8 +56,8 @@
   .cell.win{background:var(--win); color:#052e16; border-color:var(--win);
             animation:pop .4s ease;}
   @keyframes pop{0%{transform:scale(.7);}60%{transform:scale(1.12);}100%{transform:scale(1);}}
-  .score{display:flex; gap:18px; font-size:1rem;}
-  .score div{background:var(--card); padding:8px 16px; border-radius:12px; border:1px solid #334155;}
+  .score{display:flex; gap:10px; font-size:clamp(.85rem,3vw,1rem); flex-wrap:wrap; justify-content:center;}
+  .score div{background:var(--card); padding:6px 14px; border-radius:12px; border:1px solid #334155;}
   .score b.x{color:var(--x);} .score b.o{color:var(--o);}
   .actions{display:flex; gap:10px;}
   .actions button{
@@ -60,7 +67,24 @@
   }
   .actions button.ghost{background:transparent; color:var(--muted); border:1px solid #334155;}
   .actions button:active{transform:scale(.96);}
-  footer{color:var(--muted); font-size:.72rem; margin-top:auto; padding-top:10px;}
+  footer{color:var(--muted); font-size:.7rem; margin-top:6px; padding-top:6px;}
+  .ver{font-size:.85rem;}
+
+  /* الافتراضي (portrait / شاشة طويلة): panel يتدفق عادي */
+  .panel{display:contents;}
+
+  /* وضع الشاشة العريضة القصيرة: لوحة جنب التحكم — لا قص أبداً */
+  @media (max-height:560px) and (min-aspect-ratio:1/1){
+    body{flex-direction:row; flex-wrap:nowrap; align-items:center; justify-content:center; gap:3vw; padding-top:4px;}
+    h1{position:fixed; top:4px; left:0; right:0; font-size:clamp(.95rem,2.8vh,1.3rem); margin:0; z-index:5;}
+    .sub,footer{display:none;}
+    .board{--bsize:min(78vh, 42vw, 340px);}
+    .panel{display:flex; flex-direction:column; align-items:center; gap:8px; max-width:50vw;}
+    .modes{order:-1; flex-wrap:nowrap;}
+    .score{flex-wrap:nowrap;}
+    .actions{flex-wrap:wrap; justify-content:center;}
+    .actions button{padding:8px 14px; font-size:.85rem;}
+  }
 </style>
 </head>
 <body>
@@ -73,22 +97,22 @@
     <button id="mHard" class="active">صعب (لا يُهزم)</button>
   </div>
 
-  <div class="status" id="status">دورك <span class="mk x">✕</span></div>
-
   <div class="board" id="board"></div>
 
-  <div class="score">
-    <div><span class="mk x">✕</span> <b class="x" id="sx">0</b></div>
-    <div>تعادل <b id="sd">0</b></div>
-    <div><span class="mk o">◯</span> <b class="o" id="so">0</b></div>
+  <div class="panel">
+    <div class="status" id="status">دورك <span class="mk x">✕</span></div>
+    <div class="score">
+      <div><span class="mk x">✕</span> <b class="x" id="sx">0</b></div>
+      <div>تعادل <b id="sd">0</b></div>
+      <div><span class="mk o">◯</span> <b class="o" id="so">0</b></div>
+    </div>
+    <div class="actions">
+      <button id="reset">جولة جديدة</button>
+      <button id="clear" class="ghost">تصفير النتيجة</button>
+    </div>
   </div>
 
-  <div class="actions">
-    <button id="reset">جولة جديدة</button>
-    <button id="clear" class="ghost">تصفير النتيجة</button>
-  </div>
-
-  <footer>v1.0 · يعمل أوفلاين · OpenClaw</footer>
+  <footer>v1.2 · يعمل أوفلاين · OpenClaw</footer>
 
 <script src="game.js"></script>
 </body>
